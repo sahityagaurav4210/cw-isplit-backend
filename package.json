@@ -1,0 +1,42 @@
+{
+  "name": "cw-isplit-backend",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "This is the hidden \"brain\" of the CW Expense Tracker app. It safely stores your spending information, keeps your account secure, and organizes your money into different groups. It works behind the scenes to ensure your financial data is always accurate and ready whenever you check your budget.",
+  "keywords": [
+    "expense",
+    "finance",
+    "nodejs",
+    "backend",
+    "typescript",
+    "mongodb"
+  ],
+  "homepage": "https://github.com/sahityagaurav4210/cw-isplit-backend#readme",
+  "bugs": {
+    "url": "https://github.com/sahityagaurav4210/cw-isplit-backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sahityagaurav4210/cw-isplit-backend.git"
+  },
+  "license": "Apache-2.0",
+  "author": "Gaurav Sahitya",
+  "main": "build/index.js",
+  "scripts": {
+    "dev": "npx nodemon",
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.5.0",
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1"
+  }
+}
