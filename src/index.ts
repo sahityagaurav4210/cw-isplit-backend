@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { runServer } from "./app";
 
 (async function () {

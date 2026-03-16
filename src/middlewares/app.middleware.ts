@@ -1,20 +1,17 @@
-import type { NextFunction, Request, Response } from "express";
-import CWISplitAPIReply from "../api/index";
-import { ApiStatus, HttpCodes } from "../constants/api.constants";
-import { CWISplitAppException } from "../exceptions/app.exception";
+import type { NextFunction, Request, Response } from 'express';
+import CWISplitAPIReply from '../api/index';
+import { ApiStatus, HttpCodes } from '../constants/api.constants';
+import { CWISplitAppException } from '../exceptions/app.exception';
+import { RequestManager } from '../config';
+import type { CWISplitRequest } from '../interfaces';
 
-export function appGlobalErrHandlerMiddleware(
-  err: any,
-  request: Request,
-  response: Response,
-  next: NextFunction,
-) {
+export function appGlobalErrHandlerMiddleware(err: any, request: Request, response: Response, next: NextFunction) {
   const reply = new CWISplitAPIReply();
 
   if (err instanceof CWISplitAppException) {
     reply.apiStatus = err.status;
     reply.apiDetails = { message: err.message };
-    reply.apiReqId = "req-id";
+    reply.apiReqId = 'req-id';
 
     response.status(err.code).json(reply);
     return;
@@ -22,7 +19,12 @@ export function appGlobalErrHandlerMiddleware(
 
   reply.apiStatus = ApiStatus.INTERNAL_SERVER_ERROR;
   reply.apiDetails = { message: err.message };
-  reply.apiReqId = "req-id";
+  reply.apiReqId = 'req-id';
 
   response.status(HttpCodes.INTERNAL_SERVER_ERROR).json(reply);
+}
+
+export async function appReqIdHandlerMiddleware(request: Request, response: Response, next: NextFunction) {
+  (request as CWISplitRequest).reqId = RequestManager.getNextReqId();
+  next();
 }
