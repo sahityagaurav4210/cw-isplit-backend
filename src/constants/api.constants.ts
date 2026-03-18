@@ -1,14 +1,14 @@
 export enum ApiStatus {
-  SUCCESS = "success",
-  CREATED = "created",
-  BAD_REQUEST = "bad_request",
-  UNAUTHORIZED = "unauthorized",
-  FORBIDDEN = "forbidden",
-  NOT_FOUND = "not_found",
-  INTERNAL_SERVER_ERROR = "server_error",
-  SERVICE_UNAVAILABLE = "service_unavailable",
-  GATEWAY_TIMEOUT = "gateway_timeout",
-  UNSET = "unset",
+  SUCCESS = 'success',
+  CREATED = 'created',
+  BAD_REQUEST = 'bad_request',
+  UNAUTHORIZED = 'unauthorized',
+  FORBIDDEN = 'forbidden',
+  NOT_FOUND = 'not_found',
+  INTERNAL_SERVER_ERROR = 'server_error',
+  SERVICE_UNAVAILABLE = 'service_unavailable',
+  GATEWAY_TIMEOUT = 'gateway_timeout',
+  UNSET = 'unset',
 }
 
 export enum HttpCodes {

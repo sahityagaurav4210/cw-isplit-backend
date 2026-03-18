@@ -1,0 +1,74 @@
+openapi: 3.0.0
+
+info:
+  title: CW iSplit Backend API
+  version: 0.0.1
+  description: This is the hidden "brain" of the CW iSplit app. It safely stores your spending information, keeps your account secure, and organizes your money into different groups. It works behind the scenes to ensure your financial data is always accurate and ready whenever you check your balance.<br/><h2>About the author</h2><p>Gaurav Sahitya is a software engineer with 3 years of experience in the software industry. He is a passionate developer who loves to build innovative and user-friendly applications. He is also a regular contributor to open-source projects and is always looking for new challenges to take on.</p>
+  contact:
+    name: Gaurav Sahitya
+    email: works.sahitya@gmail.com
+    url: www.sgaurav.me
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: http://localhost:3031/api/v1
+    description: Local development server
+
+paths:
+  /app/health:
+    get:
+      summary: Health check
+      tags:
+        - App Controller
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /app/ping:
+    get:
+      summary: Ping the server
+      tags:
+        - App Controller
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+components:
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        reqId:
+          type: string
+        details:
+          type: object
+          properties:
+            message:
+              type: string
+            data:
+              type: object
+              nullable: true

@@ -1,5 +1,5 @@
-import { promises as fs } from "fs";
-import path from "path";
+import { promises as fs } from 'fs';
+import path from 'path';
 
 export class FileHelper {
   /**
@@ -18,11 +18,8 @@ export class FileHelper {
    * @param filePath - The path where the file should be created.
    * @param content - The data to write into the file. Defaults to an empty string.
    */
-  public static async createFile(
-    filePath: string,
-    content: string = "",
-  ): Promise<void> {
-    await fs.writeFile(filePath, content, "utf-8");
+  public static async createFile(filePath: string, content: string = ''): Promise<void> {
+    await fs.writeFile(filePath, content, 'utf-8');
   }
 
   /**
@@ -32,7 +29,7 @@ export class FileHelper {
    * @returns The string content of the file.
    */
   public static async readFile(filePath: string): Promise<string> {
-    return await fs.readFile(filePath, "utf-8");
+    return await fs.readFile(filePath, 'utf-8');
   }
 
   /**
@@ -43,11 +40,8 @@ export class FileHelper {
    * @param filePath - The path of the file to write to.
    * @param content - The data to write into the file.
    */
-  public static async writeFile(
-    filePath: string,
-    content: string,
-  ): Promise<void> {
-    await fs.writeFile(filePath, content, "utf-8");
+  public static async writeFile(filePath: string, content: string): Promise<void> {
+    await fs.writeFile(filePath, content, 'utf-8');
   }
 
   /**
@@ -56,11 +50,8 @@ export class FileHelper {
    * @param filePath - The path of the file to append to.
    * @param content - The data to append into the file.
    */
-  public static async appendFile(
-    filePath: string,
-    content: string,
-  ): Promise<void> {
-    await fs.appendFile(filePath, content, "utf-8");
+  public static async appendFile(filePath: string, content: string): Promise<void> {
+    await fs.appendFile(filePath, content, 'utf-8');
   }
 
   /**
