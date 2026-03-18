@@ -1,4 +1,5 @@
 import { ApiStatus, HttpCodes } from './api.constants';
+import { DBModelsNames } from './db.constants';
 import { AppLoggerColors, AppLoggerLevels } from './logger.constants';
 
 namespace AppConstants {
@@ -13,6 +14,12 @@ namespace AppConstants {
     return {
       ApiStatus,
       HttpCodes,
+    };
+  }
+
+  export function getDbConstants() {
+    return {
+      DBModelsNames,
     };
   }
 }

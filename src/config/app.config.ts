@@ -1,5 +1,9 @@
 import express, { type Application } from 'express';
-import { appGlobalErrHandlerMiddleware, appReqIdHandlerMiddleware } from '../middlewares/app.middleware';
+import {
+  appGlobalErrHandlerMiddleware,
+  appLoggerMiddleware,
+  appReqIdHandlerMiddleware,
+} from '../middlewares/app.middleware';
 import router from '../routes/index';
 import { FileHelper } from '../helpers';
 import YAML from 'yamljs';
@@ -23,6 +27,7 @@ class AppManager {
       AppManager.instance.use('/api/docs', swaggerUi.serve, swaggerUi.setup(apiDocs));
 
       AppManager.instance.use('/api/v1', appReqIdHandlerMiddleware);
+      AppManager.instance.use(appLoggerMiddleware);
       AppManager.instance.use('/api/v1', router);
 
       AppManager.instance.use(appGlobalErrHandlerMiddleware);

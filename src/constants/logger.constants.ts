@@ -1,17 +1,17 @@
 const AppLoggerLevels = {
-  ERROR: 0,
-  WARN: 1,
-  INFO: 2,
-  HTTP: 3,
-  DEBUG: 4,
+  error: 0,
+  warn: 1,
+  info: 2,
+  http: 3,
+  debug: 4,
 };
 
 enum AppLoggerColors {
-  ERROR = 'red',
-  WARN = 'yellow',
-  INFO = 'green',
-  HTTP = 'magenta',
-  DEBUG = 'cyan',
+  error = 'red',
+  warn = 'yellow',
+  info = 'green',
+  http = 'magenta',
+  debug = 'cyan',
 }
 
 export { AppLoggerColors, AppLoggerLevels };
