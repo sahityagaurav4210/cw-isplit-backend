@@ -1,4 +1,12 @@
-import { AppEventsManager, AppManager, DatabaseManager, LoggerManager, RedisManager, RequestManager } from './config';
+import {
+  AppEventsManager,
+  AppManager,
+  DatabaseManager,
+  LoggerManager,
+  RedisManager,
+  RequestManager,
+  UploadsManager,
+} from './config';
 import { FileHelper } from './helpers/files.helpers';
 
 export async function runServer() {
@@ -8,6 +16,7 @@ export async function runServer() {
   await AppManager.initialize();
   LoggerManager.initialize();
   await DatabaseManager.initialize();
+  await UploadsManager.initialize();
 
   const app = await AppManager.getInstance();
 
@@ -18,9 +27,8 @@ export async function runServer() {
   app.listen(PORT, HOST);
   const bannerPath = FileHelper.getAbsolutePath('./banner.txt');
   const bannerContent = (await FileHelper.readFile(bannerPath)).toString();
+  const text = `iSplit Backend service (${AppManager.getAppPid()}) started successfully and is consuming ${AppManager.getAppMemoryUsage()} MB of memory 🚀🚀🚀🚀`;
 
   console.log(bannerContent);
-  console.log(
-    `iSplit Backend service (${AppManager.getAppPid()}) started successfully and is consuming ${AppManager.getAppMemoryUsage()} MB of memory 🚀🚀🚀🚀`
-  );
+  console.log(text);
 }

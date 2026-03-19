@@ -68,4 +68,12 @@ export class FileHelper {
       return false;
     }
   }
+
+  public static async createDirectory(directoryPath: string): Promise<void> {
+    if (await this.exists(directoryPath)) {
+      return;
+    }
+
+    await fs.mkdir(directoryPath, { recursive: true });
+  }
 }
