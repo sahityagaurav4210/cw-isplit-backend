@@ -32,6 +32,43 @@ class RequestDTOValidationMessagesHelper {
       },
     };
   }
+
+  public static getValidationMessageForUserLoginDTO(): Record<string, any> {
+    return {
+      email: {
+        'string.base': 'Email must be a string',
+        'string.empty': 'Email is required',
+        'string.pattern.base': 'Email must be a valid email address',
+        'any.required': 'Email is required',
+      },
+      password: {
+        'string.base': 'Password must be a string',
+        'string.empty': 'Password is required',
+        'string.pattern.base':
+          'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character',
+        'any.required': 'Password is required',
+      },
+      platform: {
+        'string.base': 'Platform must be a string',
+        'string.empty': 'Platform is required',
+        'any.required': 'Platform is required',
+      },
+      deviceType: {
+        'string.base': 'Device type must be a string',
+        'string.empty': 'Device type is required',
+        'any.required': 'Device type is required',
+      },
+      deviceOs: {
+        'string.base': 'Device OS must be a string',
+        'string.empty': 'Device OS is required',
+        'any.required': 'Device OS is required',
+      },
+      deviceModel: {
+        'string.base': 'Device model must be a string',
+        'string.empty': 'Device model is required',
+      },
+    };
+  }
 }
 
 export default RequestDTOValidationMessagesHelper;

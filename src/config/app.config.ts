@@ -8,6 +8,7 @@ import router from '../routes/index';
 import { FileHelper } from '../helpers';
 import YAML from 'yamljs';
 import swaggerUi from 'swagger-ui-express';
+import cookieParser from 'cookie-parser';
 
 class AppManager {
   private static instance: Application;
@@ -16,13 +17,19 @@ class AppManager {
 
   public static async initialize(): Promise<void> {
     if (!AppManager.instance) {
+      const cookieSecret = process.env.COOKIE_SECRET;
       const apiDocsPath = FileHelper.getAbsolutePath('./src/docs/index.yaml');
       const apiDocs = YAML.load(apiDocsPath);
+
+      if (!cookieSecret) {
+        throw new Error('COOKIE_SECRET is not defined');
+      }
 
       AppManager.instance = express();
       AppManager.instance.use(express.json({ limit: '5kb' }));
       AppManager.instance.use(express.urlencoded({ extended: true, limit: '5kb' }));
       AppManager.instance.set('trust proxy', true);
+      AppManager.instance.use(cookieParser(cookieSecret));
 
       AppManager.instance.use('/api/docs', swaggerUi.serve, swaggerUi.setup(apiDocs));
 

@@ -1,3 +1,5 @@
+import type { DBObjectId } from '.';
+
 interface IDbId {
   _id: string;
 }
@@ -17,4 +19,16 @@ export interface IUserModel extends IDbId, IDbTimestamps {
   isBlocked: boolean;
   isDeleted: boolean;
   photoUri?: string;
+}
+
+export interface ISessionModel extends IDbId, IDbTimestamps {
+  userId: DBObjectId;
+  refreshToken: string;
+  expiresAt: Date;
+  isLoggedIn: boolean;
+  ipAddress?: string;
+  userAgent?: string;
+  deviceType?: string;
+  deviceModel?: string;
+  deviceOs?: string;
 }
