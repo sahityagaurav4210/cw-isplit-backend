@@ -1,0 +1,11 @@
+node_modules
+.vscode
+.env
+.git
+.gitignore
+.prettierrc
+.prettierignore
+logs
+assets
+uploads
+credentials.json

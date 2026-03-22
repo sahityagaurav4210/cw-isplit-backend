@@ -9,6 +9,7 @@ import { FileHelper } from '../helpers';
 import YAML from 'yamljs';
 import swaggerUi from 'swagger-ui-express';
 import cookieParser from 'cookie-parser';
+import { authRequest } from '../middlewares';
 
 class AppManager {
   private static instance: Application;
@@ -31,6 +32,7 @@ class AppManager {
       AppManager.instance.set('trust proxy', true);
       AppManager.instance.use(cookieParser(cookieSecret));
 
+      AppManager.instance.use('/api/assets', authRequest, express.static(FileHelper.getAbsolutePath('./assets')));
       AppManager.instance.use('/api/docs', swaggerUi.serve, swaggerUi.setup(apiDocs));
 
       AppManager.instance.use('/api/v1', appReqIdHandlerMiddleware);

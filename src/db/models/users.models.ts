@@ -53,7 +53,6 @@ const userSchema = new mongoose.Schema<IUserModel>(
     },
     photoUri: {
       type: String,
-      match: [Patterns.common.url, 'Photo url is invalid'],
       default: null,
     },
   },

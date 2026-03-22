@@ -7,3 +7,4 @@ export { default as LoggerManager } from './logger.config';
 export { default as CryptoManager } from './crypto.config';
 export { default as UploadsManager } from './uploads.config';
 export { default as CookieManager } from './cookie.config';
+export { default as JwtManager } from './jwt.config';

@@ -19,6 +19,7 @@ export interface IUserModel extends IDbId, IDbTimestamps {
   isBlocked: boolean;
   isDeleted: boolean;
   photoUri?: string;
+  comparePassword: (password: string) => Promise<boolean>;
 }
 
 export interface ISessionModel extends IDbId, IDbTimestamps {

@@ -3,6 +3,7 @@ import {
   AppManager,
   CookieManager,
   DatabaseManager,
+  JwtManager,
   LoggerManager,
   RedisManager,
   RequestManager,
@@ -17,6 +18,7 @@ export async function runServer() {
   await AppManager.initialize();
   LoggerManager.initialize();
   CookieManager.initialize();
+  JwtManager.initialize();
   await DatabaseManager.initialize();
   await UploadsManager.initialize();
 

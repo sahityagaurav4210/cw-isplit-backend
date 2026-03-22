@@ -1,0 +1,113 @@
+name: cw-isplit-backend ci/cd pipeline
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setting up
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Installing dependencies
+        run: npm install
+
+      - name: Building source code
+        run: npm run build
+
+      - name: Quality gate analysis
+        env:
+          SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_SECRET }}
+          SONAR_HOST_URL: ${{ vars.SONARQUBE_HOST }}
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          args: >
+            -Dsonar.host.url=${SONAR_HOST_URL}
+            -Dsonar.token=${SONARQUBE_TOKEN}
+            -Dsonar.qualitygate.wait=true
+
+      - name: Preparing development image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: |
+          docker build -t cw-isplit-dev-backend .
+          docker tag cw-isplit-dev-backend ${DOCKER_USERNAME}/cw-isplit-dev-backend:latest
+
+      - name: Preparing production image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/release'
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          GH_USERNAME: ${{vars.GH_USERNAME}}
+          GH_PWD: ${{secrets.GH_SECRET}}
+        run: |
+          docker build -t cw-isplit-backend .
+          docker tag cw-isplit-backend ${DOCKER_USERNAME}/cw-isplit-backend:latest
+          docker tag cw-isplit-backend ghcr.io/${GH_USERNAME}/cw-isplit-backend:1.3.0
+
+      - name: Publishing development image
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_SECRET }}
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+          docker push ${DOCKER_USERNAME}/cw-isplit-dev-backend:latest
+
+      - name: Publishing production image
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_SECRET }}
+          GH_USERNAME: ${{vars.GH_USERNAME}}
+          GH_PWD: ${{secrets.GH_SECRET}}
+        if: github.event_name == 'push' && github.ref == 'refs/heads/release'
+        run: |
+          echo Logging and pushing the production image to Docker Hub
+
+          docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+          docker push ${DOCKER_USERNAME}/cw-isplit-backend:latest
+
+          echo Logging and pushing the production image to GitHub Container Registry
+
+          echo ${GH_PWD} | docker login ghcr.io -u ${GH_USERNAME} --password-stdin
+          docker push ghcr.io/${GH_USERNAME}/cw-isplit-backend:0.0.1
+
+      - name: Deploying on development server
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          CAPROVER_HOST: ${{secrets.CAPROVER_HOST}}
+          CAPROVER_PWD: ${{secrets.CAPROVER_PWD}}
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          npm install -g caprover
+          caprover deploy \
+          --host ${CAPROVER_HOST} \
+          -p ${CAPROVER_PWD} \
+          --imageName ${DOCKER_USERNAME}/cw-isplit-dev-backend:latest \
+          --appName cw-isplit-dev-backend
+
+      - name: Deploying on production server
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          CAPROVER_HOST: ${{ secrets.CAPROVER_PROD_HOST }}
+          CAPROVER_PWD: ${{ secrets.CAPROVER_PROD_PWD }}
+        if: github.event_name == 'push' && github.ref == 'refs/heads/release'
+        run: |
+          npm install -g caprover
+          caprover deploy \
+          --host ${CAPROVER_HOST} \
+          -p ${CAPROVER_PWD} \
+          --imageName ${DOCKER_USERNAME}/cw-isplit-backend:latest \
+          --appName cw-isplit-backend
