@@ -19,7 +19,7 @@ class AppManager {
   public static async initialize(): Promise<void> {
     if (!AppManager.instance) {
       const cookieSecret = process.env.COOKIE_SECRET;
-      const apiDocsPath = FileHelper.getAbsolutePath('./src/docs/index.yaml');
+      const apiDocsPath = FileHelper.getAbsolutePath('./docs/index.yaml');
       const apiDocs = YAML.load(apiDocsPath);
 
       if (!cookieSecret) {
