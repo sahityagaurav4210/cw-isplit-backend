@@ -22,6 +22,13 @@ lib-cov
 coverage
 *.lcov
 
+# Editor files
+.vscode/
+
+# Upload and other files
+assets/
+uploads/
+
 # nyc test coverage
 .nyc_output
 
@@ -36,6 +43,7 @@ bower_components
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
+build/
 
 # Dependency directories
 node_modules/
