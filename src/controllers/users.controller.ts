@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { createUser, editUserProfile } from '../services';
+import { createUser, editUserProfile, getUserProfile } from '../services';
 import CWISplitAPIReply from '../api';
 import AppConstants from '../constants';
 import type { CWISplitAuthRequest, CWISplitRequest } from '../interfaces';
@@ -55,6 +55,31 @@ export async function editUserProfileController(req: Request, res: Response): Pr
 
   reply.apiStatus = ApiStatus.SUCCESS;
   reply.apiDetails = { message: 'Profile updated successfully', data: serviceReply.data };
+  reply.apiReqId = reqId;
+
+  return res.status(HttpCodes.OK).json(reply);
+}
+
+export async function getUserProfileController(req: Request, res: Response): Promise<Response> {
+  const reqId = (req as CWISplitAuthRequest).reqId;
+  const userId = (req as CWISplitAuthRequest).userId;
+
+  const logger = LoggerManager.getInstance();
+  const { ApiStatus, HttpCodes } = AppConstants.getApiConstants();
+  const reply = new CWISplitAPIReply();
+
+  logger.info(`Req Id: ${reqId}, Message: A request to get user profile has been received`);
+
+  const serviceReply = await getUserProfile(userId);
+
+  if (!serviceReply.success) {
+    logger.warn(`Req Id: ${reqId}, Message: Failed to get user profile`);
+  }
+
+  logger.info(`Req Id: ${reqId}, Message: User profile fetched successfully, Payload: ${JSON.stringify(serviceReply.data)}`);
+
+  reply.apiStatus = ApiStatus.SUCCESS;
+  reply.apiDetails = { message: 'Profile fetched successfully', data: serviceReply.data };
   reply.apiReqId = reqId;
 
   return res.status(HttpCodes.OK).json(reply);

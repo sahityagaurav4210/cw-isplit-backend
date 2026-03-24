@@ -59,3 +59,19 @@ export async function editUserProfile(
   logger.info(`Req Id: ${reqId} - User profile updated successfully for user ID ${userId}.`);
   return { success: true, data: updatedUser.toJSON() };
 }
+
+export async function getUserProfile(userId: string): Promise<IServiceResponse<Record<string, any>>> {
+  const logger = LoggerManager.getInstance();
+  const reqId = RequestManager.getCurrentReqId();
+  const { ApiStatus, HttpCodes } = AppConstants.getApiConstants();
+
+  const user = await UserModel.findOne({ _id: userId, isBlocked: false, isDeleted: false }, '-createdAt, -__v');
+
+  if (!user) {
+    logger.error(`Req Id: ${reqId} - User with ID ${userId} not found or is blocked/deleted. Cannot get profile.`);
+    throw new CWISplitAppException(ApiStatus.NOT_FOUND, 'User not found', HttpCodes.NOT_FOUND, getUserProfile.name);
+  }
+
+  logger.info(`Req Id: ${reqId} - User profile fetched successfully for user ID ${userId}.`);
+  return { success: true, data: user.toJSON() };
+}

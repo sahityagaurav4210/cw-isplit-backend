@@ -5,6 +5,6 @@ import profileRouter from './profile.routes';
 const userRouter = Router();
 
 userRouter.post('/register', validateUserRegistrationDTOMiddleware, createUserController);
-userRouter.use('/edit', profileRouter);
+userRouter.use('/profile', profileRouter);
 
 export default userRouter;

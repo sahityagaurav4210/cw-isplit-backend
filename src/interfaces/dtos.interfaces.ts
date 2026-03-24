@@ -15,3 +15,7 @@ export interface ILoginUserDto {
   deviceOs: DeviceOsType;
   deviceModel?: DeviceModelType;
 }
+
+export interface IEditUserProfileDto extends ICreateUserDto {
+  photo?: Express.Multer.File;
+}

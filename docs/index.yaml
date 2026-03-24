@@ -15,6 +15,8 @@ info:
 servers:
   - url: http://localhost:3031/api/v1
     description: Local development server
+  - url: https://api.devisplit.codingworks.in/api/v1
+    description: Development server
 
 paths:
   /app/health:
@@ -35,7 +37,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
   /app/ping:
     get:
       summary: Ping the server
@@ -50,6 +51,227 @@ paths:
                 $ref: '#/components/schemas/ApiResponse'
         '500':
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /app/users/register:
+    post:
+      summary: Register a new user
+      tags:
+        - User Controller
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+      responses:
+        '200':
+          description: This is the response when the user is registered successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: This is response signifies that the request body is invalid. This will occur only when either request body has **invalid data** or the user you're trying to register **already exists**.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: This response signifies that the request could not be processed due to an internal server error. Please report the issue to the developer with the **request ID** in case the issue persists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /app/users/profile/edit:
+    post:
+      summary: Edit user profile
+      tags:
+        - User Controller
+      description: Use this endpoint to edit the user profile.<br/> **Note:** This endpoint is used to edit the user profile. It is not used to update the user's password and also please provide atleast one field in the request body.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EditUserProfile'
+      responses:
+        '200':
+          description: This is the response when the user profile is updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: This is response signifies that the request body is invalid. An **invalid** request body signifies that the request body contains one or more **invalid data**.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: This response signifies that the request could not be processed due to an invalid token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: This response signifies that the request could not be processed due to an internal server error. Please report the issue to the developer with the **request ID** in case the issue persists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /app/users/profile/view:
+    get:
+      summary: View user profile
+      tags:
+        - User Controller
+      security:
+        - BearerAuth: []
+      description: Use this endpoint to view the user profile. Unlike the **/app/auth/get-me** endpoint, this api returns the user's full profile.
+      responses:
+        '200':
+          description: This is the response when the user profile is viewed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: This response signifies that the request could not be processed due to an invalid token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: This response signifies that the request could not be processed due to an internal server error. Please report the issue to the developer with the **request ID** in case the issue persists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /app/auth/login:
+    post:
+      summary: Login into your account
+      tags:
+        - Auth Controller
+      description: Use this endpoint to login into your account. All the fields except **deviceModel** are required. Device model is only required in case of **ios** or **android** platform.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+      responses:
+        '200':
+          description: This is the response when the user is logged in successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: This is response signifies that the request body is invalid. An **invalid** request body signifies that the request body contains one or more **invalid data**. It can also occur in case of **invalid credentials** provided by the user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: This response signifies that the request could not be processed due to an internal server error. Please report the issue to the developer with the **request ID** in case the issue persists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /app/auth/logout:
+    post:
+      summary: Logout from your account
+      tags:
+        - Auth Controller
+      description: Use this endpoint to logout from your account.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: This is the response when the user is logged out successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: This response signifies that the request could not be processed due to an invalid token, i.e., user who has made this request is not **authenticated**.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: This response signifies that the request could not be processed due to an internal server error. Please report the issue to the developer with the **request ID** in case the issue persists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /app/auth/get-me:
+    get:
+      summary: Get current user profile
+      tags:
+        - Auth Controller
+      description: Use this endpoint to check whether the user is logged in or not. If the user is logged in, it will return the user's basic profile. Otherwise, it will return an error.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: This is the response when the user profile is fetched successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: This response signifies that the request could not be processed due to an invalid token, i.e., user who has made this request is not **authenticated**.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: This response signifies that the request could not be processed due to an internal server error. Please report the issue to the developer with the **request ID** in case the issue persists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /app/auth/generate:
+    post:
+      summary: Generates new access token
+      tags:
+        - Auth Controller
+      description: Use this endpoint to generate new access token using the refresh token which was given to the user by the **login** api.<br/> **Note:** While calling this endpoint, you can either provide the refresh token in the **header**, **body** or in the **cookie**. It is recommended to provide the refresh token in the **header**.
+      security:
+        - HeaderAuth: []
+        - CookieAuth: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+                  description: Refresh token
+      responses:
+        '200':
+          description: This is the response when the user is logged in successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: This is response signifies that the request body is invalid. An **invalid** request body signifies that the request body contains one or more **invalid data**.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: This response signifies that the request could not be processed due to an internal server error. Please report the issue to the developer with the **request ID** in case the issue persists.
           content:
             application/json:
               schema:
@@ -72,3 +294,65 @@ components:
             data:
               type: object
               nullable: true
+    UserRegister:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        phone:
+          type: string
+    EditUserProfile:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        photo:
+          type: string
+          format: binary
+    UserLogin:
+      type: object
+      required:
+        - email
+        - password
+        - platform
+        - deviceType
+        - deviceOs
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        platform:
+          type: string
+        deviceType:
+          type: string
+        deviceOs:
+          type: string
+        deviceModel:
+          type: string
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    HeaderAuth:
+      type: apiKey
+      in: header
+      name: x-refresh-token
+    CookieAuth:
+      type: apiKey
+      in: cookie
+      name: refreshToken

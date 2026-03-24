@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { authRequest, uploadMiddleware } from '../../middlewares';
-import { editUserProfileController } from '../../controllers/users.controller';
+import { authRequest, uploadMiddleware, validateEditUserProfileDTOMiddleware } from '../../middlewares';
+import { editUserProfileController, getUserProfileController } from '../../controllers/users.controller';
 
 const profileRouter = Router();
 
-profileRouter.post('/profile', uploadMiddleware, authRequest, editUserProfileController);
+profileRouter.post('/edit', uploadMiddleware, validateEditUserProfileDTOMiddleware, authRequest, editUserProfileController);
+profileRouter.get('/view', authRequest, getUserProfileController);
 
 export default profileRouter;

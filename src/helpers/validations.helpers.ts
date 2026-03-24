@@ -69,6 +69,14 @@ class RequestDTOValidationMessagesHelper {
       },
     };
   }
+
+  public static getValidationMessageForEditUserProfileDTO(): Record<string, any> {
+    return {
+      photo: {
+        'any.required': 'Photo is required',
+      },
+    };
+  }
 }
 
 export default RequestDTOValidationMessagesHelper;
