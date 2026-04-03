@@ -4,6 +4,7 @@ import { AppLoggerColors, AppLoggerLevels } from './logger.constants';
 import { DeviceModelType, DeviceOsType, DeviceType, PlatformType } from './sessions.constants';
 export * from './app.constants';
 export * from './regex.constants';
+export * from './otp.constants';
 
 namespace AppConstants {
   export function getLoggerConstants() {

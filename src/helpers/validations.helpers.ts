@@ -77,6 +77,34 @@ class RequestDTOValidationMessagesHelper {
       },
     };
   }
+
+  public static getValidationMessageForSendOTPDTO(): Record<string, any> {
+    return {
+      phone: {
+        'string.base': 'Phone number must be a string',
+        'string.empty': 'Phone number is required',
+        'string.pattern.base': 'Phone number must be a valid phone number',
+        'any.required': 'Phone number is required',
+      },
+    };
+  }
+
+  public static getValidationMessageForVerifyPhoneNumberDTO(): Record<string, any> {
+    return {
+      phone: {
+        'string.base': 'Phone number must be a string',
+        'string.empty': 'Phone number is required',
+        'string.pattern.base': 'Phone number must be a valid phone number',
+        'any.required': 'Phone number is required',
+      },
+      otp: {
+        'string.base': 'OTP must be a string',
+        'string.empty': 'OTP is required',
+        'string.pattern.base': 'OTP must be a valid OTP',
+        'any.required': 'OTP is required',
+      },
+    };
+  }
 }
 
 export default RequestDTOValidationMessagesHelper;

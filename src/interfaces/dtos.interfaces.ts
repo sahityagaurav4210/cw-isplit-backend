@@ -19,3 +19,11 @@ export interface ILoginUserDto {
 export interface IEditUserProfileDto extends ICreateUserDto {
   photo?: Express.Multer.File;
 }
+
+export interface IVerifyPhoneNumberDto {
+  otp: string;
+}
+
+export interface ISendOTPDto {
+  phone: string;
+}

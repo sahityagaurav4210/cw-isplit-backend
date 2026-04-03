@@ -33,3 +33,13 @@ export interface ISessionModel extends IDbId, IDbTimestamps {
   deviceModel?: string;
   deviceOs?: string;
 }
+
+export interface IOtpModel extends IDbId, IDbTimestamps {
+  phone: string;
+  otp: number;
+  expiresAt: Date;
+  isVerified: boolean;
+  source: string;
+  failedAttempts: number;
+  blockedUntil: Date;
+}

@@ -9,6 +9,7 @@ export enum ApiStatus {
   SERVICE_UNAVAILABLE = 'service_unavailable',
   GATEWAY_TIMEOUT = 'gateway_timeout',
   UNSET = 'unset',
+  TOO_MANY_REQUESTS = 'too_many_requests',
 }
 
 export enum HttpCodes {
@@ -23,6 +24,7 @@ export enum HttpCodes {
   INTERNAL_SERVER_ERROR = 500,
   SERVICE_UNAVAILABLE = 503,
   GATEWAY_TIMEOUT = 504,
+  TOO_MANY_REQUESTS = 429,
 }
 
 export interface ApiDetails {

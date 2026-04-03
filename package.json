@@ -37,6 +37,7 @@
     "@types/multer": "^2.1.0",
     "@types/node": "^25.5.0",
     "@types/swagger-ui-express": "^4.1.8",
+    "@types/twilio": "^3.19.2",
     "@types/yamljs": "^0.2.34",
     "esbuild": "^0.27.4",
     "nodemon": "^3.1.14",
@@ -56,6 +57,7 @@
     "multer": "^2.1.1",
     "redis": "^5.11.0",
     "swagger-ui-express": "^5.0.1",
+    "twilio": "^5.13.1",
     "winston": "^3.19.0",
     "yamljs": "^0.3.0"
   }
